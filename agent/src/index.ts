@@ -4,6 +4,7 @@ import express from "express";
 import {
   getClient,
   isPrivate,
+  isMasterProtected,
   usingCI,
   numCommits,
   reviews,
@@ -23,6 +24,7 @@ app.get(
     const client = getClient();
     const metrics = {
       isPrivate: await isPrivate(client, repository),
+      isMasterProtected: await isMasterProtected(client, repository),
       numCommits: await numCommits(client, repository, 60),
       usingCI: await usingCI(client, repository),
       organization: process.env.ORGANIZATION,

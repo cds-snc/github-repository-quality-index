@@ -1,4 +1,5 @@
 export { getClient } from "./client";
+export { isMasterProtected } from "./isMasterProtected"
 export { isPrivate } from "./isPrivate";
 export { reviews } from "./reviews";
 export { usingCI } from "./usingCI";
