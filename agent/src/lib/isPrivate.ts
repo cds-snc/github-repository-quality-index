@@ -5,7 +5,7 @@ export const isPrivate = async (client: any, name: string): Promise<boolean|null
       repo: name
     });
     return repo.data.private;
-  } catch {
+  } catch(e) {
     return null;
   }
 };
