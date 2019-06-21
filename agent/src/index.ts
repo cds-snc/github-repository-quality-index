@@ -7,11 +7,12 @@ import {
   isMasterProtected,
   usingCI,
   numCommits,
+  daysSinceBump,
   reviews,
   hasLicense
 } from "./lib";
 
-dotenv.config({ path: path.resolve(__dirname + "/.env") });
+dotenv.config();
 
 export const app: express.Application = express();
 
@@ -26,6 +27,7 @@ app.get(
       isPrivate: await isPrivate(client, repository),
       isMasterProtected: await isMasterProtected(client, repository),
       numCommits: await numCommits(client, repository, 60),
+      daysSinceBump: await daysSinceBump(client, repository),
       usingCI: await usingCI(client, repository),
       organization: process.env.ORGANIZATION,
       repository,
