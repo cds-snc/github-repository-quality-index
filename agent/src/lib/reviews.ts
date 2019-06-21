@@ -13,7 +13,7 @@ export const reviews = async (client: any, name: string): Promise<number|null> =
       q
     });
 
-    const total = result.data.total_count
+    const total = result.data.items.length
     
     if (total < 1) {
       return 0;
@@ -31,6 +31,7 @@ export const reviews = async (client: any, name: string): Promise<number|null> =
         reviewed++;
       }
     })
+
     return (reviewed / total) * 100;
   } catch(e) {
     return null;

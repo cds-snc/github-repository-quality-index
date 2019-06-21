@@ -1,6 +1,7 @@
 import * as dotenv from "dotenv";
 import * as path from "path";
 import express from "express";
+
 import {
   getClient,
   isPrivate,
@@ -9,7 +10,8 @@ import {
   numCommits,
   daysSinceBump,
   reviews,
-  hasLicense
+  hasLicense,
+  snykInstalled
 } from "./lib";
 
 dotenv.config();
@@ -17,6 +19,7 @@ dotenv.config();
 export const app: express.Application = express();
 
 const port: number = parseInt(process.env.PORT, 10) || 3000;
+
 
 app.get(
   `/:repository`,
@@ -32,7 +35,8 @@ app.get(
       organization: process.env.ORGANIZATION,
       repository,
       reviews: await reviews(client, repository),
-      hasLicense: await hasLicense(client, repository)
+      hasLicense: await hasLicense(client, repository),
+      snykInstalled: await snykInstalled(client, repository)
     };
 
     res.status(200).send(metrics);
