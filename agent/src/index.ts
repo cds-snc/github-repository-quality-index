@@ -1,7 +1,14 @@
 import * as dotenv from "dotenv";
 import * as path from "path";
 import express from "express";
-import { getClient, isPrivate, usingCI, numCommits, reviews } from "./lib";
+import {
+  getClient,
+  isPrivate,
+  usingCI,
+  numCommits,
+  reviews,
+  hasLicense
+} from "./lib";
 
 dotenv.config({ path: path.resolve(__dirname + "/.env") });
 
@@ -20,7 +27,8 @@ app.get(
       usingCI: await usingCI(client, repository),
       organization: process.env.ORGANIZATION,
       repository,
-      reviews: await reviews(client, repository)
+      reviews: await reviews(client, repository),
+      hasLicense: await hasLicense(client, repository)
     };
 
     res.status(200).send(metrics);
