@@ -2,6 +2,7 @@ import * as dotenv from "dotenv";
 import express from "express";
 
 import { getClient, isPrivate } from "./lib";
+import { numCommits } from "./lib/numCommits";
 
 dotenv.config();
 
@@ -13,9 +14,9 @@ app.get(`/:repository`, async (req: express.Request, res: express.Response): Pro
 
   const repository = req.params.repository;
   const client = getClient();
-
   const metrics = {
     isPrivate: await isPrivate(client, repository),
+    numCommits: await numCommits(client, repository, 60),
     organization: process.env.ORGANIZATION,
     repository
   };
