@@ -6,8 +6,14 @@ module.exports = {
       "Repos",
       [
         {
-          repoName: "test",
-          statistics: JSON.stringify({ data: "my repo" }),
+          repoName: "repo-1",
+          statistics: JSON.stringify({ pull_request: 1, approved: false }),
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },
+        {
+          repoName: "repo-2",
+          statistics: JSON.stringify({ pull_request: 1, approved: true }),
           createdAt: new Date(),
           updatedAt: new Date()
         }

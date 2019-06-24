@@ -6,11 +6,13 @@
   "scripts": {
     "create": "npx sequelize-cli db:create",
     "migrate": "npx sequelize-cli db:migrate",
-    "start": "npm run create && npm run migrate"
+    "start": "npm run create && npm run migrate",
+    "drop": "npx sequelize-cli db:drop"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "dotenv": "^8.0.0",
     "pg": "^7.11.0",
     "pg-hstore": "^2.3.3",
     "sequelize": "^5.8.12",
