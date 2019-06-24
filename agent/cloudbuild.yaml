@@ -9,7 +9,7 @@ steps:
       - --plaintext-file=.env
       - --location=global
       - --project=github-quality-index
-      - --keyring=build
+      - --keyring=deploy
       - --key=env
   - name: "gcr.io/cloud-builders/gcloud"
     dir: 'agent'
@@ -21,8 +21,8 @@ steps:
       - --plaintext-file=github.pem
       - --location=global
       - --project=github-quality-index
-      - --keyring=build
-      - --key=pem
+      - --keyring=deploy
+      - --key=github
   - name: 'gcr.io/cloud-builders/docker'
     dir: 'agent'
     args:
