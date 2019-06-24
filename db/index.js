@@ -1,13 +1,19 @@
 const Sequelize = require("sequelize");
+
 const { configure } = require("sequelize-pg-utilities");
 const config = require("./config/config.json");
 const { name, user, password, options } = configure(config);
 
+// npx sequelize-cli db:create
 // npx sequelize-cli db:migrate
 // npx sequelize-cli db:seed:all
 
+
 const sequelize = new Sequelize(name, user, password, options);
 
+sequelize.createDatabase("new-database");
+
+/*
 sequelize
   .authenticate()
   .then(() => {
@@ -16,3 +22,4 @@ sequelize
   .catch(err => {
     console.error("Unable to connect to the database:", err);
   });
+  */
