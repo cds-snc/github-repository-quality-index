@@ -1,5 +1,6 @@
 steps:
   - name: "gcr.io/cloud-builders/gcloud"
+    dir: 'agent'
     id: "decrypt env"
     args:
       - kms
@@ -11,6 +12,7 @@ steps:
       - --keyring=build
       - --key=env
   - name: "gcr.io/cloud-builders/gcloud"
+    dir: 'agent'
     id: "decrypt pem"
     args:
       - kms
@@ -22,6 +24,7 @@ steps:
       - --keyring=build
       - --key=pem
   - name: 'gcr.io/cloud-builders/docker'
+    dir: 'agent'
     args:
       [
         'build',
