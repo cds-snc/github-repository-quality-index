@@ -1,4 +1,4 @@
-export const daysSinceBump = async (client: any, name: string): Promise<number|null> => {
+export const daysSinceBump = async (client: any, name: string): Promise<number|boolean|null> => {
   try {
     const repo = await client.pulls.list({
       owner: process.env.ORGANIZATION,
@@ -28,11 +28,10 @@ export const daysSinceBump = async (client: any, name: string): Promise<number|n
     }
 
     // get number of days since mostRecent
-    let numDays = null;
     if (mostRecent) {
-      numDays = new Date().getDate() - new Date(mostRecent).getDate();
+      return new Date().getDate() - new Date(mostRecent).getDate();
     }
-    return numDays;
+    return false;
   } catch(e) {
     return null;
   }

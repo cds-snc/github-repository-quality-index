@@ -4,8 +4,8 @@ process.env.ORGANIZATION = "foo";
 
 test("returns null if the Github returns a error", async () => {
   const mockClient = {
-    pulls: {
-      list: async () => ({})
+    foo: {
+      fab: async () => ({})
     }
   }
   expect(await daysSinceBump(mockClient, "bar")).toEqual(null);
@@ -18,7 +18,7 @@ test("returns null if there are no prs with the correct label", async () => {
       list: async () => ({data: [{"labels": []}, {"labels": l}]})
     }
   }
-  expect(await daysSinceBump(mockClient, "bar")).toEqual(null);
+  expect(await daysSinceBump(mockClient, "bar")).toEqual(false);
 });
 
 test("returns the number of days since the last pr with the correct label", async () => {

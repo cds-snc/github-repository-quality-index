@@ -26,7 +26,8 @@ app.get(
   `/:repository`,
   async (req: express.Request, res: express.Response): Promise<void> => {
     const repository = req.params.repository;
-    const client = getClient();
+    const client = await getClient(repository);
+
     const metrics = {
       isPrivate: await isPrivate(client, repository),
       isMasterProtected: await isMasterProtected(client, repository),
