@@ -2,13 +2,13 @@ import { usingCI } from "../../lib/usingCI";
 
 process.env.ORGANIZATION = "foo";
 
-test("returns null if the Github returns a error", async () => {
+test("returns false if the Github returns a error", async () => {
   const mockClient = {
     repos: {
       getContents: async () => ({})
     }
   };
-  expect(await usingCI(mockClient, "bar")).toEqual(null);
+  expect(await usingCI(mockClient, "bar")).toEqual(false);
 });
 
 test("returns true if the github repo has ci", async () => {

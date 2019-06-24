@@ -11,7 +11,8 @@ import {
   daysSinceBump,
   reviews,
   hasLicense,
-  snykInstalled
+  snykInstalled,
+  snykVulnerabilities
 } from "./lib";
 
 dotenv.config();
@@ -36,7 +37,8 @@ app.get(
       repository,
       reviews: await reviews(client, repository),
       hasLicense: await hasLicense(client, repository),
-      snykInstalled: await snykInstalled(client, repository)
+      snykInstalled: await snykInstalled(client, repository),
+      snykVulnerabilities: await snykVulnerabilities(repository)
     };
 
     res.status(200).send(metrics);

@@ -27,7 +27,7 @@ export const usingCI = async (
       return true;
     }
 
-    return null;
+    return false;
   } catch (e) {
     console.log("ERR:", e.message);
     return null;
