@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "npm run create && npm run migrate",
     "create": "npx sequelize-cli db:create",
     "migrate": "npx sequelize-cli db:migrate",
-    "start": "npm run create && npm run migrate",
+    "seed": "npx sequelize-cli db:seed:all",
     "drop": "npx sequelize-cli db:drop"
   },
   "author": "",
