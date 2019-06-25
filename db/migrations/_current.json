@@ -1,0 +1,13 @@
+{
+    "tables": {
+        "Repos": {
+            "tableName": "Repos",
+            "indexes": []
+        },
+        "Scores": {
+            "tableName": "Scores",
+            "indexes": []
+        }
+    },
+    "revision": 1
+}

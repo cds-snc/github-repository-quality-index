@@ -23,10 +23,6 @@ module.exports = {
   },
 
   down: function(queryInterface, Sequelize) {
-    queryInterface.bulkDelete("Users", [
-      {
-        first_name: "John"
-      }
-    ]);
+    queryInterface.bulkDelete("Repos", null, {});
   }
 };

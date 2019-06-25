@@ -12,7 +12,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       score: {
-        type: Sequelize.INTEGER
+        type: Sequelize.JSON
       },
       system: {
         type: Sequelize.STRING
