@@ -11,44 +11,67 @@ import {
   Legend
 } from "recharts";
 
-/*
-
-const data = [
-    { name: "Page A", uv: 4000, pv: 2400, amt: 2400 },
-    { name: "Page B", uv: 3000, pv: 1398, amt: 2210 },
-    { name: "Page C", uv: 2000, pv: 9800, amt: 2290 },
-    { name: "Page D", uv: 2780, pv: 3908, amt: 2000 },
-    { name: "Page E", uv: 1890, pv: 4800, amt: 2181 },
-    { name: "Page F", uv: 2390, pv: 3800, amt: 2500 },
-    { name: "Page G", uv: 3490, pv: 4300, amt: 2100 }
-  ];
-
-  //{"score":{"value":153,"clarity":0.15,"ambiguity":0.16}}
-
-*/
-
 const SimpleLineChart = ({ state }) => {
   const data = state.data;
   return (
     <LineChart
-      width={600}
-      height={300}
+      margin={{ top: 50, right: 50, left: 50 }}
+      width={800}
+      height={500}
       data={data}
-      margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
     >
       <XAxis dataKey="name" />
-      <YAxis />
+      <YAxis yAxisId="left" type="number" />
+      <YAxis yAxisId="right" type="number" orientation="right" />
       <CartesianGrid strokeDasharray="3 3" />
       <Tooltip />
       <Legend />
-      <Line type="monotone" dataKey="value" stroke="#8884d8" />
-      <Line type="monotone" dataKey="clarity" stroke="#82ca9d" />
-      <Line type="monotone" dataKey="ambiguity" stroke="#000" />
+      <Line yAxisId="left" type="monotone" dataKey="value" stroke="#8884d8" />
+      <Line
+        yAxisId="right"
+        type="monotone"
+        dataKey="clarity"
+        stroke="#82ca9d"
+      />
+      <Line yAxisId="right" type="monotone" dataKey="ambiguity" stroke="#000" />
     </LineChart>
   );
 };
 
-const endPoint = "http://localhost:3000/scores";
+const getUrlParameter = name => {
+  name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+  var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+  var results = regex.exec(location.search);
+  return results === null
+    ? ""
+    : decodeURIComponent(results[1].replace(/\+/g, " "));
+};
+
+//mocks from db
+//digital-canada-ca
+//service-dashboard
+
+const prefixEndPoint = () => {
+  if (location && location.port && location.port === "1234") {
+    //for local testing
+    return "http://localhost:3000";
+  }
+};
+
+const endPoint = `${prefixEndPoint()}/scores/${getUrlParameter("reponame")}`;
+
+const Header = () => {
+  return (
+    <div
+      style={{ width: "100%", backgroundColor: "#000", padding: "20px 50px" }}
+    >
+      <img
+        height="52px"
+        src="https://cds-accessibility-handbook.herokuapp.com/stylesheets/images/svg/cds-lockup-ko-en.svg"
+      />
+    </div>
+  );
+};
 
 function App() {
   const [data, setData] = useState({ data: [] });
@@ -62,7 +85,20 @@ function App() {
     fetchData();
   }, []);
 
-  return <SimpleLineChart state={data} />;
+  return (
+    <div>
+      <Header />
+      <div style={{ display: "flex", margin: "20px 40px" }}>
+        <cds-tag bkd-color="#f90277" text="Alpha" class="hydrated" />
+      </div>
+      <div style={{ display: "flex", margin: "30px" }}>
+        <h1 style={{ margin: "0 50px 0", display: "inline-block" }}>
+          Performance Index - {getUrlParameter("reponame")}
+        </h1>
+      </div>
+      <SimpleLineChart state={data} />
+    </div>
+  );
 }
 
 ReactDOM.render(<App />, document.getElementById("container"));

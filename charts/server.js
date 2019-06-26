@@ -16,7 +16,7 @@ const { name, user, password, options } = configure(config);
 const sequelize = new Sequelize(name, user, password, options);
 
 app.use(cors());
-//app.use("/", express.static(path.join(__dirname, "dist")));
+app.use("/", express.static(path.join(__dirname, "dist")));
 
 app.use(function(req, res, next) {
   if (req.originalUrl && req.originalUrl.split("/").pop() === "favicon.ico") {
@@ -26,31 +26,21 @@ app.use(function(req, res, next) {
   return next();
 });
 
-app.post(`/scores`, async (req, res) => {
-  /*
- "score": {
-                "value": 153,
-                "clarity": 0.15,
-                "ambiguity": 0.16
-            }
-
-*/
-  /*
-  const data = [
-    { name: "Page A", value: 4000, clarity: 2400, ambiguity: 2400 },
-    { name: "Page B", value: 3000, clarity: 1398, ambiguity: 2100 },
-    { name: "Page C", value: 2000, clarity: 9800, ambiguity: 1000 }
-  ];
-  */
+app.post(`/scores/:reponame`, async (req, res) => {
+  const repoName = req.params.reponame ? req.params.reponame : "";
 
   let data = [];
 
   try {
     await sequelize.authenticate();
-    const scores = await Score(sequelize, Sequelize);
     console.log("Connection has been established successfully.");
+
+    const scores = await Score(sequelize, Sequelize);
+
+    // query for the data
     const dataset = await scores.findAll({
-      where: { repoName: "digital-canada-ca", system: "tss" },
+      where: { repoName: repoName, system: "tss" },
+      limit: 50,
       attributes: ["createdAt", "score"]
     });
 
