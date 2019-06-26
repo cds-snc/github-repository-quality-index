@@ -7,8 +7,16 @@ const cors = require("cors");
 const app = express();
 const port = parseInt(process.env.PORT, 10) || 3000;
 
+//db
+const Sequelize = require("sequelize");
+const { configure } = require("sequelize-pg-utilities");
+const Score = require("../db/models/score");
+const config = require("../db/config/config.js");
+const { name, user, password, options } = configure(config);
+const sequelize = new Sequelize(name, user, password, options);
+
 app.use(cors());
-app.use("/", express.static(path.join(__dirname, "dist")));
+//app.use("/", express.static(path.join(__dirname, "dist")));
 
 app.use(function(req, res, next) {
   if (req.originalUrl && req.originalUrl.split("/").pop() === "favicon.ico") {
@@ -18,16 +26,48 @@ app.use(function(req, res, next) {
   return next();
 });
 
-app.get(`/scores`, async (req, res) => {
+app.post(`/scores`, async (req, res) => {
+  /*
+ "score": {
+                "value": 153,
+                "clarity": 0.15,
+                "ambiguity": 0.16
+            }
+
+*/
+  /*
   const data = [
-    { name: "Page A", uv: 4000, pv: 2400, amt: 2400 },
-    { name: "Page B", uv: 3000, pv: 1398, amt: 2210 },
-    { name: "Page C", uv: 2000, pv: 9800, amt: 2290 },
-    { name: "Page D", uv: 2780, pv: 3908, amt: 2000 },
-    { name: "Page E", uv: 1890, pv: 4800, amt: 2181 },
-    { name: "Page F", uv: 2390, pv: 3800, amt: 2500 },
-    { name: "Page G", uv: 3490, pv: 4300, amt: 2100 }
+    { name: "Page A", value: 4000, clarity: 2400, ambiguity: 2400 },
+    { name: "Page B", value: 3000, clarity: 1398, ambiguity: 2100 },
+    { name: "Page C", value: 2000, clarity: 9800, ambiguity: 1000 }
   ];
+  */
+
+  let data = [];
+
+  try {
+    await sequelize.authenticate();
+    const scores = await Score(sequelize, Sequelize);
+    console.log("Connection has been established successfully.");
+    const dataset = await scores.findAll({
+      where: { repoName: "digital-canada-ca", system: "tss" },
+      attributes: ["createdAt", "score"]
+    });
+
+    dataset.forEach(item => {
+      const { value, clarity, ambiguity } = item.score;
+
+      data.push({
+        name: item.name,
+        value: value,
+        clarity: clarity,
+        ambiguity: ambiguity
+      });
+    });
+  } catch (e) {
+    console.log(e.message);
+  }
+
   res.status(200).send({ data });
 });
 

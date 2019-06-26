@@ -27,7 +27,9 @@
     "parcel-plugin-clean-dist": "^0.0.6",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "recharts": "^1.6.2"
+    "recharts": "^1.6.2",
+    "sequelize": "^5.8.12",
+    "sequelize-pg-utilities": "^1.2.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
