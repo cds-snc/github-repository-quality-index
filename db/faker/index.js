@@ -90,6 +90,38 @@ const getRandomInt = (min = 100, max = 500) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
+const avg = v => {
+  return v.reduce((a, b) => a + b, 0) / v.length;
+};
+
+const smoothOut = (vector, variance) => {
+  var t_avg = avg(vector) * variance;
+  var ret = Array(vector.length);
+  for (var i = 0; i < vector.length; i++) {
+    (function() {
+      var prev = i > 0 ? ret[i - 1] : vector[i];
+      var next = i < vector.length ? vector[i] : vector[i - 1];
+      ret[i] = avg([t_avg, avg([prev, vector[i], next])]);
+    })();
+  }
+  return ret;
+};
+
+const smoothVals = (min = 100, max = 500, numDays = 10, divide = false) => {
+  let vals = [];
+  for (i = 0; i <= numDays; i++) {
+    let num = getRandomInt(min, max);
+    if (divide) {
+      num = num / divide;
+    }
+    vals.push(num);
+  }
+
+  console.log(vals);
+
+  return smoothOut(vals, 1);
+};
+
 const getDate = (addDays = 1) => {
   let d = new Date();
   let date = d.setDate(d.getDate() + addDays);
@@ -99,14 +131,18 @@ const getDate = (addDays = 1) => {
 const setData = (repoName, numDays = 10) => {
   let data = [];
 
+  const overallVals = smoothVals(100, 500, numDays);
+  const clarityVals = smoothVals(0, 100, numDays, 100);
+  const ambiguityVals = smoothVals(0, 100, numDays, 100);
+
   for (i = 0; i <= numDays; i++) {
     let obj = {
       system: "tss",
       repoName: repoName,
       score: JSON.stringify({
-        value: getRandomInt(),
-        clarity: getRandomInt(0, 100) / 100,
-        ambiguity: getRandomInt(0, 100) / 100
+        value: overallVals[i],
+        clarity: clarityVals[i],
+        ambiguity: ambiguityVals[i]
       }),
       createdAt: getDate(i),
       updatedAt: new Date()
@@ -118,10 +154,10 @@ const setData = (repoName, numDays = 10) => {
   return data;
 };
 
-const one = setData(repos[0], 200);
-const two = setData(repos[1], 100);
-
-let data = [...one, ...two];
+const one = setData(repos[5], 50);
+//const two = setData(repos[1], 100);
+let data = one;
+//let data = [...one, ...two];
 
 fs.writeFile("./data.json", JSON.stringify(data), function(err) {
   if (err) {
