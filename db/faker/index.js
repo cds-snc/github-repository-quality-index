@@ -118,8 +118,8 @@ const setData = (repoName, numDays = 10) => {
   return data;
 };
 
-const one = setData(repos[0], 10);
-const two = setData(repos[1], 10);
+const one = setData(repos[0], 200);
+const two = setData(repos[1], 100);
 
 let data = [...one, ...two];
 
