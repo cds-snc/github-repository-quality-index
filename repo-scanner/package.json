@@ -1,0 +1,15 @@
+{
+  "scripts": {
+    "dev": "NODE_ENV=dev node src/index.js --local"
+  },
+  "dependencies": {
+    "dotenv": "^8.0.0",
+    "esm": "^3.2.25",
+    "node-fetch": "^2.6.0",
+    "pg": "^7.11.0",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.8.12",
+    "sequelize-cli": "^5.5.0",
+    "sequelize-pg-utilities": "^1.2.1"
+  }
+}
