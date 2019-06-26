@@ -1,0 +1,38 @@
+{
+  "name": "charts",
+  "version": "1.0.0",
+  "description": "TSS chart output",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cds-snc/github-repository-quality-index"
+  },
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html",
+    "build:serve": "yarn build && node server,js",
+    "serve": "node server.js",
+    "docker": "docker build --rm -f 'charts/Dockerfile' -t charts:latest charts",
+    "docker:run": "docker run -p 80:3000 charts:latest"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/plugin-transform-runtime": "^7.4.4",
+    "axios": "^0.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "parcel-bundler": "^1.10",
+    "parcel-plugin-clean-dist": "^0.0.6",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "recharts": "^1.6.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
+    "@babel/plugin-transform-regenerator": "^7.4.5"
+  }
+}
