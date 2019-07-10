@@ -7,19 +7,33 @@ const { configure } = require("sequelize-pg-utilities");
 const config = require("./config/config.js");
 const { name, user, password, options } = configure(config);
 const sequelize = new Sequelize(name, user, password, options);
+const getToken = require("./authenticate");
 
 (async () => {
+  const token = await getToken();
   const page_length = 100;
   let more_data = true;
   let repos = [];
+  let page = 1;
   // upper limit of 100 repos in github's api
   while (more_data) {
-    const response = await fetch(`https://api.github.com/orgs/${process.env.ORGANIZATION}/repos?per_page=${page_length}`);
+    const response = await fetch(`https://api.github.com/orgs/${process.env.ORGANIZATION}/repos?per_page=${page_length}&page=${page}`, {
+      headers: {
+        authorization: `token ${token}`,
+        accept: "application/vnd.github.machine-man-preview+json"
+      }
+    });
+    //console.log(response);
+    page ++;
     if (response.ok) {
       const data = await response.json();
+      console.log("Page " + page + "of results: " + data.length + " responses");
       repos = repos.concat(data);
       if (data.length < page_length)
         more_data = false;
+    } else {
+      console.log(response)
+      throw new Error("response not ok");
     }
   }
   
