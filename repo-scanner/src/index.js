@@ -1,5 +1,6 @@
 require = require("esm")(module); 
 require('dotenv').config();
+const express = require('express');
 const fetch = require("node-fetch");
 const Repo = require("./models/repo");
 const Sequelize = require("sequelize");
@@ -9,7 +10,10 @@ const { name, user, password, options } = configure(config);
 const sequelize = new Sequelize(name, user, password, options);
 const getToken = require("./authenticate");
 
-(async () => {
+const port = parseInt(process.env.PORT, 10) || 3000;
+const server = express();
+
+const scan = async () => {
   const token = await getToken();
   const page_length = 100;
   let more_data = true;
@@ -27,7 +31,7 @@ const getToken = require("./authenticate");
     page ++;
     if (response.ok) {
       const data = await response.json();
-      console.log("Page " + page + "of results: " + data.length + " responses");
+      console.log("Page " + page + " of results: " + data.length + " responses");
       repos = repos.concat(data);
       if (data.length < page_length)
         more_data = false;
@@ -66,4 +70,14 @@ const getToken = require("./authenticate");
     console.log(e.message);
     process.exit();
   }
-})();
+};
+
+server.get('/scan', async function(req, res) {
+  await scan();
+  res.status(200).send('OK');
+});
+
+server.listen(port, err => {
+  if (err) throw err;
+  console.log(`> Ready on http://localhost:${port}`);
+});
