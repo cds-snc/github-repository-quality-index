@@ -49,7 +49,9 @@ steps:
         'gcr.io/$PROJECT_ID/agent:$SHORT_SHA', 
         '--region', 
         'us-central1',
-        '--allow-unauthenticated'
+        '--allow-unauthenticated',
+        '--platform',
+        'managed' 
       ]
 images:
   - 'gcr.io/$PROJECT_ID/agent:$SHORT_SHA'
